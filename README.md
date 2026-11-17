@@ -1,50 +1,64 @@
-# TP Integrador · DAW1 — <Nombre del sistema>
 
-**Alumno/a:** Apellido, Nombre · **Legajo:** 00000
-**Enunciado elegido:** <biblioteca | gimnasio | taller | canchas | eventos>
+# TP Integrador · DAW1 — Sistema de Biblioteca
 
+**Alumno/a:** De La Fuente, Leonela Rocío  
+**Legajo:** COMPLETAR  
+**Enunciado elegido:** biblioteca
 
 ## Descripción
 
-<Dos o tres líneas: qué hace el sistema y para quién.>
+Sistema de gestión de una biblioteca que permite administrar libros, socios y préstamos. Permite registrar usuarios, controlar la disponibilidad de libros y gestionar las devoluciones.
 
 ## Cómo ejecutarlo
 
 Requisitos: Java 21 (Maven viene incluido con `mvnw`).
 
-```bash
-./mvnw spring-boot:run
+En Windows:
+```powershell
+.\mvnw.cmd spring-boot:run
 ```
 
-La API queda en `http://localhost:8080/api`. La base H2 se guarda en `data/` (no se sube al repositorio).
+La API queda en `http://localhost:8080/api`.
+La base H2 se guarda en `data/`.
 Consola H2: `http://localhost:8080/h2-console`.
 
 ## Modelo
 
 | Entidad | Atributos principales | Relaciones |
 |---|---|---|
-| <Entidad1> | id, ... | ... |
-| <Entidad2> | id, ... | ... |
-| <Entidad3> | id, estado, ... | N a 1 con <Entidad1> y <Entidad2> |
+| Libro | id, titulo, autor, isbn | Se relaciona con Prestamo |
+| Socio | id, nombre, email | Se relaciona con Prestamo |
+| Prestamo | id, estado, fechaPrestamo, fechaDevolucion | N a 1 con Libro y Socio |
 
-Estados de <Entidad3>: `ESTADO_A → ESTADO_B | ESTADO_C`, ...
+Estados de Prestamo: `ACTIVO → DEVUELTO | VENCIDO` y `VENCIDO → DEVUELTO`.
 
 ## Endpoints
 
 | Método | Ruta | Descripción | Respuestas |
 |---|---|---|---|
-| GET | /api/... | Lista ... | 200 |
-| GET | /api/.../{id} | Busca por id | 200, 404 |
-| POST | /api/... | Crea | 201, 400, 404, 409 |
-| PUT | /api/.../{id} | Modifica | 200, 400, 404, 409 |
-| DELETE | /api/.../{id} | Borra | 204, 404, 409 |
-| PATCH | /api/.../{id}/estado | Cambia el estado | 200, 400, 404, 409 |
+| GET | /api/libros | Lista libros | 200 |
+| GET | /api/libros/{id} | Busca libro | 200, 404 |
+| POST | /api/libros | Crea libro | 201, 400, 409 |
+| PUT | /api/libros/{id} | Modifica libro | 200 |
+| DELETE | /api/libros/{id} | Borra libro | 204, 404 |
+| GET | /api/socios | Lista socios | 200 |
+| GET | /api/socios/{id} | Busca socio | 200, 404 |
+| POST | /api/socios | Crea socio | 201, 400, 409 |
+| PUT | /api/socios/{id} | Modifica socio | 200 |
+| DELETE | /api/socios/{id} | Borra socio | 204, 404 |
+| GET | /api/prestamos | Lista préstamos y filtra por estado | 200 |
+| GET | /api/prestamos/{id} | Busca préstamo | 200, 404 |
+| POST | /api/prestamos | Crea préstamo | 201, 400, 404, 409 |
+| PATCH | /api/prestamos/{id}/estado | Cambia estado | 200, 400, 404, 409 |
 
 ## Reglas de negocio
 
-1. <Regla 1 y qué código devuelve>
-2. <Regla 2>
+1. No se permiten libros con ISBN duplicado. Devuelve 409.
+2. No se permiten socios con email duplicado. Devuelve 409.
+3. Un libro no puede tener más de un préstamo activo o vencido. Devuelve 409.
+4. Un socio puede tener hasta tres préstamos activos o vencidos. Devuelve 409.
+5. Los estados de los préstamos deben respetar las transiciones permitidas.
 
 ## Pruebas
 
-En `pruebas.http` están todas las peticiones de ejemplo (se ejecutan desde IntelliJ).
+En `pruebas.http` están las peticiones de ejemplo para ejecutar desde IntelliJ IDEA.
