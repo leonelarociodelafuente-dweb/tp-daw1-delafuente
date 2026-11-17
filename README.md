@@ -2,7 +2,7 @@
 # TP Integrador · DAW1 — Sistema de Biblioteca
 
 **Alumno/a:** De La Fuente, Leonela Rocío  
-**Legajo:** COMPLETAR  
+**Legajo:** 510141  
 **Enunciado elegido:** biblioteca
 
 ## Descripción
